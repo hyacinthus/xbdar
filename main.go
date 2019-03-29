@@ -6,6 +6,7 @@ import (
 	"github.com/hyacinthus/x/xlog"
 	"github.com/hyacinthus/xbdar/handler"
 	"github.com/hyacinthus/xbdar/model"
+	"github.com/hyacinthus/xbdar/utils/xconfig"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -14,12 +15,15 @@ import (
 // 全局变量
 var (
 	// config
-	config = loadConfig()
+	config = new(Config)
 	// Logger
 	log = xlog.Get()
 )
 
 func init() {
+	// config
+	xconfig.Load(config)
+
 	// logger
 	if config.Debug {
 		xlog.Debug()
@@ -44,9 +48,11 @@ func main() {
 		e.Debug = true
 	}
 
+	// routes
 	e.GET("/chart/:id", handler.GetChart)
 	e.GET("/chart/:id/data", handler.FetchChartData)
 
+	// start
 	e.Logger.Fatal(e.Start(config.APP.Address))
 }
 

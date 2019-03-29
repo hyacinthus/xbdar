@@ -15,6 +15,8 @@ import (
 )
 
 var (
+	// config
+	config *Config
 	// Logger
 	log = xlog.Get()
 	// gorm mysql db connection
@@ -22,7 +24,8 @@ var (
 )
 
 // Init model, database, stores...
-func Init(debug bool, config *Config) {
+func Init(debug bool, conf *Config) {
+	config = conf
 	var err error
 	for {
 		db, err = gorm.Open(config.Dialect, config.ConnString)
@@ -40,6 +43,9 @@ func Init(debug bool, config *Config) {
 	if debug {
 		db.LogMode(true)
 	}
+
+	// async create tables if needed.
+	go createTables()
 }
 
 // Clean up model resources.
@@ -50,8 +56,18 @@ func Clean() {
 // createTable gorm auto migrate tables
 func createTables() {
 	db.AutoMigrate(&Datasource{})
+	db.AutoMigrate(&Chart{})
+	db.AutoMigrate(&Dashboard{})
 	initData()
 }
 
 func initData() {
+}
+
+// GetDB returns db object in ops environment.
+func GetDB() *gorm.DB {
+	if config != nil && config.IsOps {
+		return db
+	}
+	return nil
 }

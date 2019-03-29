@@ -5,6 +5,8 @@
 *.so
 *.dylib
 /app
+/xbdar
+/cmd_*
 
 # Test binary, build with `go test -c`
 *.test
@@ -21,5 +23,6 @@ debug
 .config.yml
 .config.json
 
-# Test db files.
-*.db
+# Test files.
+test/
+test.*
