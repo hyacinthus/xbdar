@@ -1,0 +1,61 @@
+{
+    "datasources": [
+        {
+            "id": "1",
+            "name": "测试json数据源",
+            "type": "file.json",
+            "param_json": {
+                "path": "files/test_ds.json"
+            }
+        },
+        {
+            "id": "2",
+            "name": "测试sqlite3数据源",
+            "type": "db.sqlite3",
+            "param_json": {
+                "path": "files/test_ds.sqlite3"
+            }
+        }
+    ],
+    "charts": [
+        {
+            "id": "1",
+            "name": "基础折线图",
+            "type": "line",
+            "datasource_type": "file.json",
+            "datasource_id": "1",
+            "data_param_json": {
+                "key_path": "data#1"
+            },
+            "chart_param_json": {
+                "plot_js": "(function(node, data) { var chart = new G2.Chart({ container: node, forceFit: true, height: window.innerHeight }); chart.source(data); chart.scale('value', { min: 0 }); chart.scale('year', { range: [0, 1] }); chart.tooltip({ crosshairs: { type: 'line' } }); chart.line().position('year*value'); chart.point().position('year*value').size(4).shape('circle').style({ stroke: '#fff', lineWidth: 1 }); chart.render(); }) "
+            }
+        },
+        {
+            "id": "2",
+            "name": "基础柱状图",
+            "type": "line",
+            "datasource_type": "file.json",
+            "datasource_id": "1",
+            "data_param_json": {
+                "key_path": "data#2"
+            },
+            "chart_param_json": {
+                "plot_js": "(function(node, data) { var chart = new G2.Chart({ container: node, forceFit: true, height: window.innerHeight }); chart.source(data); chart.scale('sales', { tickInterval: 20 }); chart.interval().position('year*sales'); chart.render(); }) "
+            }
+        }
+    ],
+    "dashboards": [
+        {
+            "id": "1",
+            "key": null,
+            "title": "测试报表",
+            "layout_json": {},
+            "parent_id": null,
+            "chart_ids": [
+                "1",
+                "2"
+            ]
+        }
+    ]
+}
