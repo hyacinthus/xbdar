@@ -44,8 +44,10 @@ func Init(debug bool, conf *Config) {
 		db.LogMode(true)
 	}
 
-	// async create tables if needed.
-	go createTables()
+	if config.AutoMigrate {
+		// async create tables if needed.
+		go CreateTables()
+	}
 }
 
 // Clean up model resources.
@@ -53,8 +55,8 @@ func Clean() {
 	db.Close()
 }
 
-// createTable gorm auto migrate tables
-func createTables() {
+// CreateTables gorm auto migrate tables
+func CreateTables() {
 	db.AutoMigrate(&Datasource{})
 	db.AutoMigrate(&Chart{})
 	db.AutoMigrate(&Dashboard{})
@@ -70,4 +72,9 @@ func GetDB() *gorm.DB {
 		return db
 	}
 	return nil
+}
+
+// CleanDB drops all tables.
+func CleanDB() {
+	db.DropTableIfExists(&Dashboard{}, &Chart{}, &Datasource{})
 }

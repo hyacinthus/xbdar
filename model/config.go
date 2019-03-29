@@ -2,6 +2,8 @@ package model
 
 // Config database configs.
 type Config struct {
+	// AutoMigrate
+	AutoMigrate bool `default:"false"`
 	// 运维模式
 	IsOps bool `default:"false"`
 
