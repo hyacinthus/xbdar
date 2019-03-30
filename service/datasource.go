@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 // DataFetcher fetch data
@@ -19,7 +21,29 @@ type DatasourceJSONFile struct {
 	Path  string
 	Param struct {
 		KeyPath string `mapstructure:"key_path"`
+	} `mapstructure:",squash"`
+}
+
+// NewDataFetcher create a data fetcher.
+func NewDataFetcher(dsType string, dsParam, dataParam map[string]interface{}) (DataFetcher, error) {
+	var df DataFetcher
+	switch dsType {
+	case "file.json":
+		df = new(DatasourceJSONFile)
+	case "file.yaml":
+		df = new(DatasourceYAMLFile)
+	case "db.sqlite3", "db.mysql", "db.postgres":
+		df = new(DatasourceDB)
+	default:
+		return nil, fmt.Errorf("unsupported datasource type: %s", dsType)
 	}
+	if err := mapstructure.Decode(dsParam, df); err != nil {
+		return nil, err
+	}
+	if err := mapstructure.Decode(dataParam, df); err != nil {
+		return nil, err
+	}
+	return df, nil
 }
 
 // Fetch DataFetcher interface
@@ -54,7 +78,7 @@ func (ds *DatasourceJSONFile) Fetch() (interface{}, error) {
 type DatasourceYAMLFile struct {
 	Path  string
 	Param struct {
-		KeyPath string `json:"key_path"`
+		KeyPath string `mapstructure:"key_path"`
 	}
 }
 
