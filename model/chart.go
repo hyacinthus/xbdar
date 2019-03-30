@@ -16,3 +16,24 @@ type Chart struct {
 	ChartParamJSON JSONObject  `json:"chart_param_json" gorm:"type:text;not null"`
 	Dashboards     []Dashboard `json:"dashboards,omitempty" gorm:"many2many:dashboard_charts"`
 }
+
+// services
+
+// GetChartByID 通过id获取图表基本信息
+func GetChartByID(id string) (*Chart, error) {
+	chart := new(Chart)
+	return chart, db.Find(chart, "id=?", id).Error
+}
+
+// GetChartWithDatasourceByID 通过id获取图表基本信息和其数据源信息
+func GetChartWithDatasourceByID(id string) (*Chart, error) {
+	chart := new(Chart)
+	if err := db.Find(chart, "id=?", id).Error; err != nil {
+		return nil, err
+	}
+	chart.Datasource = new(Datasource)
+	if err := db.Model(chart).Related(chart.Datasource).Error; err != nil {
+		return nil, err
+	}
+	return chart, nil
+}

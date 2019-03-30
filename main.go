@@ -49,8 +49,8 @@ func main() {
 	}
 
 	// routes
-	e.GET("/chart/:id", handler.GetChart)
-	e.GET("/chart/:id/data", handler.FetchChartData)
+	e.GET("/charts/:id", handler.GetChart)
+	e.GET("/charts/:id/data", handler.FetchChartData)
 
 	// start
 	e.Logger.Fatal(e.Start(config.APP.Address))
