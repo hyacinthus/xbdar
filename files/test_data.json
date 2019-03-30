@@ -15,7 +15,7 @@
             "domain": "db",
             "type": "sqlite3",
             "param_json": {
-                "path": "files/test_ds.sqlite3"
+                "conn_str": "files/test_ds.sqlite3"
             }
         }
     ],
@@ -37,7 +37,7 @@
         {
             "id": "2",
             "name": "基础柱状图",
-            "type": "line",
+            "type": "column",
             "datasource_domain": "file",
             "datasource_type": "json",
             "datasource_id": "1",
@@ -46,6 +46,20 @@
             },
             "chart_param_json": {
                 "plot_js": "(function(node, data) { var chart = new G2.Chart({ container: node, forceFit: true, height: window.innerHeight }); chart.source(data); chart.scale('sales', { tickInterval: 20 }); chart.interval().position('year*sales'); chart.render(); }) "
+            }
+        },
+        {
+            "id": "3",
+            "name": "基础饼图",
+            "type": "pie",
+            "datasource_domain": "db",
+            "datasource_type": "sqlite3",
+            "datasource_id": "2",
+            "data_param_json": {
+                "sql": "select item,percent from item_percent"
+            },
+            "chart_param_json": {
+                "plot_js": "(function(node, data) { var chart = new G2.Chart({ container: node, forceFit: true, height: window.innerHeight }); chart.source(data, { percent: { formatter: function formatter(val) { val = val * 100 + '%'; return val; } } }); chart.coord('theta'); chart.tooltip({ showTitle: false }); chart.intervalStack().position('percent').color('item').label('percent', { offset: -40, textStyle: { textAlign: 'center', shadowBlur: 2, shadowColor: 'rgba(0, 0, 0, .45)' } }).tooltip('item*percent', function(item, percent) { percent = percent * 100 + '%'; return { name: item, value: percent }; }).style({ lineWidth: 1, stroke: '#fff' }); chart.render(); })"
             }
         }
     ],

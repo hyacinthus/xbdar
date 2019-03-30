@@ -1,12 +1,15 @@
 package service
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/jinzhu/gorm"
 
 	"github.com/mitchellh/mapstructure"
 	"gopkg.in/yaml.v2"
@@ -90,18 +93,29 @@ func (ds *DatasourceFile) Fetch() (interface{}, error) {
 
 // DatasourceDB is a database as datasource
 type DatasourceDB struct {
-	Driver     string
-	ConnString string `mapstructure:"conn_string"`
-	Param      struct {
-		sql string
+	Driver  string
+	ConnStr string `mapstructure:"conn_str"`
+	Param   struct {
+		SQL string `mapstructure:"sql"`
 	} `mapstructure:",squash"`
 }
 
 // Fetch DataFetcher interface
 func (ds *DatasourceDB) Fetch() (interface{}, error) {
-	return nil, nil
+	db, err := gorm.Open(ds.Driver, ds.ConnStr)
+	if err != nil {
+		return nil, err
+	}
+	rows, err := db.Raw(ds.Param.SQL).Rows()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	return scanRecords(rows)
 }
 
+// openPathForRead optn a path(file or url) as reader
 func openPathForRead(path string) (interface {
 	io.Reader
 	io.Closer
@@ -114,4 +128,37 @@ func openPathForRead(path string) (interface {
 		return res.Body, nil
 	}
 	return os.Open(path)
+}
+
+// scanRows scan a sql rows to slice of maps.
+func scanRecords(rows *sql.Rows) ([]map[string]interface{}, error) {
+	cols, err := rows.Columns()
+	if err != nil {
+		return nil, err
+	}
+	size := len(cols)
+	fields := make([]interface{}, size)
+	pointers := make([]interface{}, size)
+	data := make([]map[string]interface{}, 0, 16)
+	for i := range pointers {
+		pointers[i] = &fields[i]
+	}
+	for rows.Next() {
+		err = rows.Scan(pointers...)
+		if err != nil {
+			return nil, err
+		}
+		record := make(map[string]interface{}, size)
+		for i, col := range cols {
+			// fix string bug
+			switch v := (fields[i]).(type) {
+			case []uint8:
+				record[col] = string(v)
+			default:
+				record[col] = v
+			}
+		}
+		data = append(data, record)
+	}
+	return data, nil
 }
