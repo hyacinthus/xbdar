@@ -11,7 +11,7 @@ func FetchChartData(id string) (interface{}, error) {
 		return nil, err
 	}
 	ds := chart.Datasource
-	dsFetcher, err := NewDataFetcher(ds.Type, ds.ParamJSON, chart.DataParamJSON)
+	dsFetcher, err := NewDataFetcher(ds.Domain, ds.Type, ds.ParamJSON, chart.DataParamJSON)
 	if err != nil {
 		return nil, err
 	}

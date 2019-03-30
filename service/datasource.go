@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/mitchellh/mapstructure"
+	"gopkg.in/yaml.v2"
 )
 
 // DataFetcher fetch data
@@ -16,26 +17,16 @@ type DataFetcher interface {
 	Fetch() (interface{}, error)
 }
 
-// DatasourceJSONFile is a json file as datasource
-type DatasourceJSONFile struct {
-	Path  string
-	Param struct {
-		KeyPath string `mapstructure:"key_path"`
-	} `mapstructure:",squash"`
-}
-
 // NewDataFetcher create a data fetcher.
-func NewDataFetcher(dsType string, dsParam, dataParam map[string]interface{}) (DataFetcher, error) {
+func NewDataFetcher(dsDomain, dsType string, dsParam, dataParam map[string]interface{}) (DataFetcher, error) {
 	var df DataFetcher
-	switch dsType {
-	case "file.json":
-		df = new(DatasourceJSONFile)
-	case "file.yaml":
-		df = new(DatasourceYAMLFile)
-	case "db.sqlite3", "db.mysql", "db.postgres":
-		df = new(DatasourceDB)
+	switch dsDomain {
+	case "file":
+		df = &DatasourceFile{Type: dsType}
+	case "db":
+		df = &DatasourceDB{Driver: dsType}
 	default:
-		return nil, fmt.Errorf("unsupported datasource type: %s", dsType)
+		return nil, fmt.Errorf("unsupported datasource domain: %s", dsDomain)
 	}
 	if err := mapstructure.Decode(dsParam, df); err != nil {
 		return nil, err
@@ -46,15 +37,38 @@ func NewDataFetcher(dsType string, dsParam, dataParam map[string]interface{}) (D
 	return df, nil
 }
 
+// DatasourceFile is a type file as datasource
+type DatasourceFile struct {
+	Type  string
+	Path  string
+	Param struct {
+		KeyPath string `mapstructure:"key_path"`
+	} `mapstructure:",squash"`
+}
+
+// Decoder decode to v
+type Decoder interface {
+	Decode(v interface{}) error
+}
+
 // Fetch DataFetcher interface
-func (ds *DatasourceJSONFile) Fetch() (interface{}, error) {
+func (ds *DatasourceFile) Fetch() (interface{}, error) {
 	reader, err := openPathForRead(ds.Path)
 	if err != nil {
 		return nil, err
 	}
 	defer reader.Close()
 
-	dec := json.NewDecoder(reader)
+	var dec Decoder
+	switch ds.Type {
+	case "json":
+		dec = json.NewDecoder(reader)
+	case "yaml":
+		dec = yaml.NewDecoder(reader)
+	default:
+		return nil, fmt.Errorf("unsupported file type: %s", ds.Type)
+	}
+
 	var data interface{}
 	if err := dec.Decode(&data); err != nil {
 		return nil, err
@@ -74,26 +88,13 @@ func (ds *DatasourceJSONFile) Fetch() (interface{}, error) {
 	return data, nil
 }
 
-// DatasourceYAMLFile is a yaml file as datasource
-type DatasourceYAMLFile struct {
-	Path  string
-	Param struct {
-		KeyPath string `mapstructure:"key_path"`
-	}
-}
-
-// Fetch DataFetcher interface
-func (ds *DatasourceYAMLFile) Fetch() (interface{}, error) {
-	return nil, nil
-}
-
 // DatasourceDB is a database as datasource
 type DatasourceDB struct {
-	driver string
-	Path   string
-	Param  struct {
+	Driver     string
+	ConnString string `mapstructure:"conn_string"`
+	Param      struct {
 		sql string
-	}
+	} `mapstructure:",squash"`
 }
 
 // Fetch DataFetcher interface

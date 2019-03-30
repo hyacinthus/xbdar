@@ -22,4 +22,5 @@ require (
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/valyala/fasttemplate v1.0.1 // indirect
 	google.golang.org/appengine v1.5.0 // indirect
+	gopkg.in/yaml.v2 v2.2.2
 )
