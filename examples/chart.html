@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,height=device-height">
+  <title>图表</title>
+  <style>
+    body {
+      text-align: center;
+    }
+    #mountNode {
+      margin: 0 auto;
+      border: 1px black dashed;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 id="title">图表</h1>
+  <div id="mountNode"></div>
+  <script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
+  <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.5.1/dist/g2.min.js"></script>
+  <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(async function () {
+      const HOST_URL = "http://localhost:5000"
+      const urlParams = new URLSearchParams(window.location.search);
+      const chart_id = urlParams.getAll("chart_id")[0];
+      if (!chart_id) {
+        return;
+      }
+
+      async function getChart(id) {
+        const resp = await axios.get(`${HOST_URL}/charts/${chart_id}`)
+        return resp.data;
+      }
+
+      async function fetchChartData(id) {
+        const resp = await axios.get(`${HOST_URL}/charts/${chart_id}/data`)
+        return resp.data;
+      }
+
+      try {
+        // get chart
+        const chart = await getChart(chart_id);
+        const chart_param = chart.chart_param_json;
+        document.title = `图表|${chart.name}`;
+        $("#title").text(chart.name);
+
+        // fetch chart data
+        const data = await fetchChartData(chart_id);
+        const render = eval(chart_param.plot_js);
+        render("mountNode", data);
+      } catch (err) {
+        console.log(err)
+      }
+    });
+  </script>
+</body>
+
+</html>
