@@ -49,6 +49,12 @@ func main() {
 	}
 
 	// routes
+	// dashboard
+	e.GET("/dashboards", handler.GetDashboards)
+	e.GET("/dashboards/:id", handler.GetDashboard)
+
+	// chart
+	e.GET("/charts", handler.GetCharts)
 	e.GET("/charts/:id", handler.GetChart)
 	e.GET("/charts/:id/data", handler.FetchChartData)
 

@@ -20,6 +20,13 @@ type Chart struct {
 
 // services
 
+// GetCharts 分页获取chart信息
+func GetCharts(offset, limit int) ([]Chart, error) {
+	charts := make([]Chart, 0)
+	q := db.Offset(offset).Limit(limit).Order("")
+	return charts, q.Find(&charts).Error
+}
+
 // GetChartByID 通过id获取图表基本信息
 func GetChartByID(id string) (*Chart, error) {
 	chart := new(Chart)
