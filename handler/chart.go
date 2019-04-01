@@ -12,20 +12,6 @@ import (
 	"github.com/labstack/echo"
 )
 
-// GetDashboards 分页获取dashboard info
-func GetDashboards(c echo.Context) error {
-	// TODO
-	c.JSON(http.StatusNotImplemented, http.StatusText(http.StatusNotImplemented))
-	return nil
-}
-
-// GetDashboard 获取dashboard info
-func GetDashboard(c echo.Context) error {
-	// TODO
-	c.JSON(http.StatusNotImplemented, http.StatusText(http.StatusNotImplemented))
-	return nil
-}
-
 // GetCharts 分页获取chart info
 func GetCharts(c echo.Context) error {
 	page := c.Get("page").(int)
@@ -43,7 +29,7 @@ func GetChart(c echo.Context) error {
 	id := c.Param("id")
 	chart, err := model.GetChartByID(id)
 	if err != nil {
-		return xerr.New(400, "request error", fmt.Sprintf("fetch chart data #%s: %v", id, err))
+		return xerr.New(400, "request error", fmt.Sprintf("get chart #%s: %v", id, err))
 	}
 	c.JSON(http.StatusOK, chart)
 	return nil
