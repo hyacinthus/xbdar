@@ -12,7 +12,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-// GetDashboards 分布获取dashboard info
+// GetDashboards 分页获取dashboard info
 func GetDashboards(c echo.Context) error {
 	// TODO
 	c.JSON(http.StatusNotImplemented, http.StatusText(http.StatusNotImplemented))
@@ -26,11 +26,11 @@ func GetDashboard(c echo.Context) error {
 	return nil
 }
 
-// GetCharts 分布获取chart info
+// GetCharts 分页获取chart info
 func GetCharts(c echo.Context) error {
-	offset := c.Get("offset").(int)
+	page := c.Get("page").(int)
 	limit := c.Get("limit").(int)
-	charts, err := model.GetCharts(offset, limit)
+	charts, err := model.GetCharts(page, limit)
 	if err != nil {
 		return xerr.New(400, "request error", fmt.Sprintf("get charts: %v", err))
 	}

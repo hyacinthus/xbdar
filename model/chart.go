@@ -21,10 +21,9 @@ type Chart struct {
 // services
 
 // GetCharts 分页获取chart信息
-func GetCharts(offset, limit int) ([]Chart, error) {
+func GetCharts(page, perPage int) (*Pagination, error) {
 	charts := make([]Chart, 0)
-	q := db.Offset(offset).Limit(limit).Order("")
-	return charts, q.Find(&charts).Error
+	return Paginate(db.Model(&Chart{}).Order("id"), page, perPage, &charts)
 }
 
 // GetChartByID 通过id获取图表基本信息
