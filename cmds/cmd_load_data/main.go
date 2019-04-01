@@ -66,10 +66,10 @@ func loadData(data *Data) {
 		id := d.ID
 		d.ID = ""
 		datasources[id] = d
+
+		db.Create(d)
 	}
-	for _, v := range datasources {
-		db.Create(v)
-	}
+
 	// charts
 	charts := make(map[string]*model.Chart)
 	for _, d := range data.Charts {
@@ -77,18 +77,24 @@ func loadData(data *Data) {
 		d.ID = ""
 		d.DatasourceID = datasources[d.DatasourceID].ID
 		charts[id] = d
+
+		db.Create(d)
 	}
-	for _, v := range charts {
-		db.Create(v)
-	}
+
 	// dashboards
 	dashboards := make(map[string]*model.Dashboard)
 	for _, d := range data.Dashboards {
 		id := d.ID
+		d.ID = ""
 		v := &d.Dashboard
+		if v.ParentID != nil {
+			// 在数据文件中保证parent在前面定义
+			v.ParentID = &dashboards[*v.ParentID].ID
+		}
 		dashboards[id] = v
-
 		db.Create(v)
+
+		// dashboard's charts.
 		for _, chartID := range d.ChartIDs {
 			db.Model(v).Association("Charts").Append(charts[chartID])
 		}

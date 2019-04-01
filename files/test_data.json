@@ -67,12 +67,45 @@
         {
             "id": "1",
             "key": null,
-            "title": "测试报表",
+            "title": "测试报表#1",
             "layout_json": {},
             "parent_id": null,
             "chart_ids": [
                 "1",
                 "2"
+            ]
+        },
+        {
+            "id": "2",
+            "key": null,
+            "title": "测试报表#2",
+            "layout_json": {},
+            "parent_id": null,
+            "chart_ids": [
+                "2",
+                "3"
+            ]
+        },
+        {
+            "id": "3",
+            "key": null,
+            "title": "测试报表#1.1",
+            "layout_json": {},
+            "parent_id": "1",
+            "order": 1,
+            "chart_ids": [
+                "1"
+            ]
+        },
+        {
+            "id": "4",
+            "key": null,
+            "title": "测试报表#1.2",
+            "layout_json": {},
+            "parent_id": "1",
+            "order": 2,
+            "chart_ids": [
+                "3"
             ]
         }
     ]
