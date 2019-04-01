@@ -15,7 +15,7 @@
             "domain": "db",
             "type": "sqlite3",
             "param_json": {
-                "conn_str": "files/test_ds.sqlite3"
+                "dsn": "files/test_ds.sqlite3"
             }
         }
     ],

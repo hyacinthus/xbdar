@@ -8,9 +8,9 @@ type Config struct {
 	IsOps bool `default:"false"`
 
 	// db info
-	Dialect    string `default:"sqlite3"`
-	ConnString string `default:"test.db"`
-	Lifetime   int64  `default:"3000"`
+	Dialect  string `default:"sqlite3"`
+	DSN      string `default:"test.db"`
+	Lifetime int64  `default:"3000"`
 }
 
 // SetIsOps set ops env, !!use this only in ops condition

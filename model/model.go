@@ -28,7 +28,7 @@ func Init(debug bool, conf *Config) {
 	config = conf
 	var err error
 	for {
-		db, err = gorm.Open(config.Dialect, config.ConnString)
+		db, err = gorm.Open(config.Dialect, config.DSN)
 		if err != nil {
 			log.WithError(err).Warn("waiting for connect to database")
 			time.Sleep(time.Second * 2)

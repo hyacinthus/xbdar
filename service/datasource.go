@@ -94,7 +94,7 @@ func (ds *DatasourceFile) Fetch() (interface{}, error) {
 // DatasourceDB is a database as datasource
 type DatasourceDB struct {
 	Driver  string
-	ConnStr string `mapstructure:"conn_str"`
+	DSN string `mapstructure:"dsn"`
 	Param   struct {
 		SQL string `mapstructure:"sql"`
 	} `mapstructure:",squash"`
@@ -102,7 +102,7 @@ type DatasourceDB struct {
 
 // Fetch DataFetcher interface
 func (ds *DatasourceDB) Fetch() (interface{}, error) {
-	db, err := gorm.Open(ds.Driver, ds.ConnStr)
+	db, err := gorm.Open(ds.Driver, ds.DSN)
 	if err != nil {
 		return nil, err
 	}
