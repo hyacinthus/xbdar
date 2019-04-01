@@ -11,8 +11,13 @@ import (
 
 // GetDashboards 分页获取dashboard info
 func GetDashboards(c echo.Context) error {
-	// TODO
-	c.JSON(http.StatusNotImplemented, http.StatusText(http.StatusNotImplemented))
+	page := c.Get("page").(int)
+	limit := c.Get("limit").(int)
+	charts, err := model.GetDashboards(page, limit)
+	if err != nil {
+		return xerr.New(400, "request error", fmt.Sprintf("get dashboards: %v", err))
+	}
+	c.JSON(http.StatusOK, charts)
 	return nil
 }
 

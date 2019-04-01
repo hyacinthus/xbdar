@@ -17,6 +17,14 @@ type Dashboard struct {
 	Charts     []*Chart     `json:"charts,omitempty" gorm:"many2many:dashboard_charts"`
 }
 
+// services
+
+// GetDashboards 分页获取报表基本信息(不包含子报表)
+func GetDashboards(page, perPage int) (*Pagination, error) {
+	dashboards := make([]Dashboard, 0)
+	return Paginate(db.Model(&Dashboard{}).Where("parent_id is ?", nil).Order("id"), page, perPage, &dashboards)
+}
+
 // GetDashboardByID 通过id获取报表基本信息（递归包含所有子报表）
 func GetDashboardByID(id string) (*Dashboard, error) {
 	dashboard := new(Dashboard)
