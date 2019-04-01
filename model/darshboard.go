@@ -12,6 +12,7 @@ type Dashboard struct {
 	LayoutJSON JSONObject  `json:"layout_json" gorm:"type:text;not null"`
 	Children   []Dashboard `json:"children,omitempty" gorm:"ForeignKey:ParentID"`
 	ParentID   *string     `json:"parent_id" gorm:"type:varchar(20)"`
+	Order      int         `json:"order" gorm:"type:samllint;default:0"`
 	Parent     *Dashboard  `json:"parent,omitempty" gorm:"ForeignKey:ParentID"`
 	Charts     []Chart     `json:"charts,omitempty" gorm:"many2many:dashboard_charts"`
 }
