@@ -1,16 +1,22 @@
 package main
 
 import (
-	"github.com/hyacinthus/x/page"
-	"github.com/hyacinthus/x/xerr"
 	"github.com/hyacinthus/x/xlog"
-	"github.com/hyacinthus/xbdar/handler"
-	"github.com/hyacinthus/xbdar/model"
+	"github.com/hyacinthus/xbdar/app"
 	"github.com/hyacinthus/xbdar/utils/xconfig"
-
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
 )
+
+// @title 雪豹商情报表系统API
+// @version 0.1.0
+// @description 展示商情数据报表
+
+// @contact.name webee
+// @contact.url https://github.com/webee
+// @contact.email webee.yw@gmail.com
+
+// schemes http https
+
+// @BasePath /
 
 // 全局变量
 var (
@@ -29,39 +35,11 @@ func init() {
 		xlog.Debug()
 	}
 
-	// initialization
-	model.Init(config.Debug, &config.DB)
+	// initialize app
+	app.Init(config.Debug, &config.APP)
 }
 
 func main() {
-	defer clean()
-
-	e := echo.New()
-	e.HTTPErrorHandler = xerr.ErrorHandler
-
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-	e.Use(middleware.CORS())
-	e.Use(page.Middleware(config.APP.PageSize)) // 分页参数解析，在 pagination.go 定义
-
-	if config.Debug {
-		e.Debug = true
-	}
-
-	// routes
-	// dashboard
-	e.GET("/dashboards", handler.GetDashboards)
-	e.GET("/dashboards/:id", handler.GetDashboard)
-
-	// chart
-	e.GET("/charts", handler.GetCharts)
-	e.GET("/charts/:id", handler.GetChart)
-	e.GET("/charts/:id/data", handler.FetchChartData)
-
 	// start
-	e.Logger.Fatal(e.Start(config.APP.Address))
-}
-
-func clean() {
-	model.Clean()
+	app.Run(config.Address)
 }

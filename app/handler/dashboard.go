@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/hyacinthus/x/xerr"
-	"github.com/hyacinthus/xbdar/model"
-	"github.com/labstack/echo"
+	"github.com/hyacinthus/xbdar/app/model"
+	"github.com/hyacinthus/xbdar/app/utils/xerr"
+	"github.com/labstack/echo/v4"
 )
 
 // GetDashboards 分页获取dashboard info

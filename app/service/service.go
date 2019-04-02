@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/hyacinthus/xbdar/model"
+	"github.com/hyacinthus/xbdar/app/model"
 )
 
 // FetchChartData fetch a chart's data
