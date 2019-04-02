@@ -26,9 +26,12 @@
   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
   <script>
     $(document).ready(async function () {
-      const HOST_URL = "http://localhost:5000"
+      let HOST_URL = "http://localhost:5000"
       const urlParams = new URLSearchParams(window.location.search);
-      const chart_id = urlParams.getAll("chart_id")[0];
+      if (urlParams.has("host_url")) {
+        HOST_URL = urlParams.get("host_url");
+      }
+      const chart_id = urlParams.get("chart_id");
       if (!chart_id) {
         return;
       }
