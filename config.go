@@ -1,18 +1,15 @@
 package main
 
 import (
-	"github.com/hyacinthus/xbdar/model"
+	"github.com/hyacinthus/xbdar/app"
 )
 
 // Config is the all settings of this project
+// TODO: create a cmd to dump a sample config file.
 type Config struct {
-	Debug bool `default:"false"`
+	Name    string `default:"xuebao dashboard"`
+	Debug   bool   `default:"false"`
+	Address string `default:":8080"`
 
-	APP struct {
-		Name     string `default:"xuebao dashboard"`
-		Address  string `default:":8080"`
-		PageSize int    `default:"10"`
-	}
-
-	DB model.Config
+	APP app.Config
 }
