@@ -20,8 +20,7 @@ func GetCharts(c echo.Context) error {
 	if err != nil {
 		return xerr.New(400, "request error", fmt.Sprintf("get charts: %v", err))
 	}
-	c.JSON(http.StatusOK, charts)
-	return nil
+	return c.JSON(http.StatusOK, charts)
 }
 
 // GetChart get a chart's info.
@@ -31,8 +30,7 @@ func GetChart(c echo.Context) error {
 	if err != nil {
 		return xerr.New(400, "request error", fmt.Sprintf("get chart #%s: %v", id, err))
 	}
-	c.JSON(http.StatusOK, chart)
-	return nil
+	return c.JSON(http.StatusOK, chart)
 }
 
 // FetchChartData fetch a chart's data.
@@ -42,6 +40,5 @@ func FetchChartData(c echo.Context) error {
 	if err != nil {
 		return xerr.New(400, "request error", fmt.Sprintf("fetch chart data #%s: %v", id, err))
 	}
-	c.JSON(http.StatusOK, data)
-	return nil
+	return c.JSON(http.StatusOK, data)
 }

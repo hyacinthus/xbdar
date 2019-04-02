@@ -17,8 +17,7 @@ func GetDashboards(c echo.Context) error {
 	if err != nil {
 		return xerr.New(400, "request error", fmt.Sprintf("get dashboards: %v", err))
 	}
-	c.JSON(http.StatusOK, charts)
-	return nil
+	return c.JSON(http.StatusOK, charts)
 }
 
 // GetDashboard 获取dashboard info(递归包含所有子报表)
@@ -28,6 +27,5 @@ func GetDashboard(c echo.Context) error {
 	if err != nil {
 		return xerr.New(400, "request error", fmt.Sprintf("get dashboard #%s: %v", id, err))
 	}
-	c.JSON(http.StatusOK, dashboard)
-	return nil
+	return c.JSON(http.StatusOK, dashboard)
 }

@@ -21,6 +21,8 @@ require (
 	github.com/mattn/go-sqlite3 v1.10.0 // indirect
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/valyala/fasttemplate v1.0.1 // indirect
+	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c // indirect
+	golang.org/x/sys v0.0.0-20190329044733-9eb1bfa1ce65 // indirect
 	google.golang.org/appengine v1.5.0 // indirect
 	gopkg.in/yaml.v2 v2.2.2
 )
