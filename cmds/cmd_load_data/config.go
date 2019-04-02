@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/hyacinthus/xbdar/model"
+	"github.com/hyacinthus/xbdar/app/model"
 )
 
 // Config is the all settings of this command

@@ -1,23 +1,33 @@
 V := @
 LDFLAGS :=
 
-cmds = cmd_load_data 
+cmds = cmd_load_data cmd_start_swagger
 
-all: app $(cmds)
+all: xbdar docs $(cmds)
 cmds: $(cmds)
 
-app:
+xbdar:
 	$(V)echo + $@
 	$(V)go build -ldflags "$(LDFLAGS) $(ldflags)" -o $@ .
+
+docs:
+	$(V)echo + $@
+	$(V)swag init
+
+cmd_start_swagger: docs
 
 $(cmds): cmd_%:
 	$(V)echo + $@
 	$(V)go build -ldflags "$(LDFLAGS) $(ldflags)" -o $@ ./cmds/$@
 
 
-.PHONY: app $(cmds) clean
+.PHONY: xbdar docs $(cmds) clean
 
 clean:
-	rm -f app $(cmds)
-
+	$(V)echo - xbdar
+	$(V)rm -f xbdar
+	$(V)echo - $(cmds)
+	$(V)rm -f $(cmds)
+	$(V)echo - docs/
+	$(V)rm -rf docs/
 
