@@ -1,6 +1,26 @@
 # 雪豹商情数据分析报告(xuebao dashboard)
 组织商情数据成完整的报表形式展现给用户。
 
+## 项目结构
+```
+main.go                 程序入口
+config.go               程序配置结构
+app/                    echo应用
+    app.go              app入口
+    config.go           app配置结构 
+    model/              db表模型定义
+    service/            功能服务
+    handler/            echo handlers
+utils/                  程序用到的工具包
+cmds/                   辅助命令工具
+    cmd_load_data/      加载测试数据
+    cmd_start_swagger/  启动swagger服务
+docs/                   swag生成的api描述文件
+examples/               测试文件
+files/                  测试和文档用到的文件
+Makefile                一些常用功能命令
+```
+
 ## 数据库设计
 ![数据表结构](/files/imgs/db.png)
 
@@ -56,7 +76,15 @@ TODO: 各个组件meta属性和组合规则
 
 
 ## API
-TODO: 使用Swagger查看和测试接口
+进入项目目录, 执行如下命令:
+```
+# make
+# ./cmd_load_data -d files/test_data.json //加载测试数据
+# ./xbdar //启动server
+# ./cmd_start_swagger //启动swagger
+```
+访问[http://localhost:7070/](http://localhost:7070/)
+
 ### 展示接口
 ### Dashboard
 * 分页查询报表信息

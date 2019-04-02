@@ -9,6 +9,7 @@ import (
 )
 
 // Load config settings for config object(should be a struct pointer).
+// TODO: 添加dump完整配置文件结构和生成默认结构文件的功能, 作为sample config file.
 func Load(config interface{}) {
 	var (
 		envFile    string

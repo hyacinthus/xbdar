@@ -9,7 +9,7 @@ import (
 type Config struct {
 	Name    string `default:"xuebao dashboard"`
 	Debug   bool   `default:"false"`
-	Address string `default:":8080"`
+	Address string `default:":5000"`
 
 	APP app.Config
 }

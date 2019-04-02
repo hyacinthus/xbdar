@@ -26,10 +26,10 @@ func init() {
 	xconfig.Load(config)
 	flag.Parse()
 
-	config.DB.SetIsOps(true)
+	config.APP.DB.SetIsOps(true)
 
 	// initialization
-	model.Init(config.Debug, &config.DB)
+	model.Init(config.Debug, &config.APP.DB)
 	model.CleanDB()
 	model.CreateTables()
 	db = model.GetDB()

@@ -16,6 +16,7 @@ type Dashboard struct {
 	Order      int          `json:"order" gorm:"type:samllint;default:0"`
 	Charts     []*Chart     `json:"charts,omitempty" gorm:"many2many:dashboard_charts"`
 }
+// TODO: 在dashboard_charts中添加覆盖chart中的数据和图表参数
 
 // services
 
