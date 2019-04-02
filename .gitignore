@@ -23,5 +23,6 @@ debug
 .config.json
 
 # Test files.
+null/
 test/
 test.*
