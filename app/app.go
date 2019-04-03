@@ -10,20 +10,36 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-var (
+// App is app object
+type App struct {
 	config *Config
 	e      *echo.Echo
-)
+}
 
-// Init app, database, stores...
-func Init(debug bool, conf *Config) {
-	config = conf
+// Run start echo server.
+func (app *App) Run(address string) {
+	app.e.Logger.Fatal(app.e.Start(address))
+}
+
+// Destroy destroy this app.
+func (app *App) Destroy() {
+	model.Clean()
+}
+
+// CreateApp create a app object.
+func CreateApp(debug bool, config *Config) *App {
+	app := &App{config, echo.New()}
 
 	// db
 	model.Init(debug, &config.DB)
 
 	// echo
-	e = echo.New()
+	initEcho(app.e, debug, config)
+
+	return app
+}
+
+func initEcho(e *echo.Echo, debug bool, config *Config) {
 	e.Debug = debug
 
 	e.HTTPErrorHandler = xerr.ErrorHandler
@@ -42,14 +58,4 @@ func Init(debug bool, conf *Config) {
 	e.GET("/charts", handler.GetCharts)
 	e.GET("/charts/:id", handler.GetChart)
 	e.GET("/charts/:id/data", handler.FetchChartData)
-}
-
-// Run start echo server.
-func Run(address string) {
-	defer clean()
-	e.Logger.Fatal(e.Start(address))
-}
-
-func clean() {
-	model.Clean()
 }

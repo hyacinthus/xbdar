@@ -24,6 +24,8 @@ var (
 	config = new(Config)
 	// Logger
 	log = xlog.Get()
+	// app
+	a *app.App
 )
 
 func init() {
@@ -35,11 +37,11 @@ func init() {
 		xlog.Debug()
 	}
 
-	// initialize app
-	app.Init(config.Debug, &config.APP)
+	// app
+	a = app.CreateApp(config.Debug, &config.APP)
 }
 
 func main() {
-	// start
-	app.Run(config.Address)
+	defer a.Destroy()
+	a.Run(config.Address)
 }
