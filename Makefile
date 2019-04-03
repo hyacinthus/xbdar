@@ -14,7 +14,7 @@ xbdar:
 
 docs:
 	$(V)echo + $@
-	$(V)swag init
+	$(V)scripts/genDocs.sh
 
 cmd_start_swagger: docs
 
