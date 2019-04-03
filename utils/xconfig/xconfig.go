@@ -31,8 +31,8 @@ func Load(config interface{}, setFlags ...func()) {
 	}
 }
 
-// ResetValues reset values.
-type ResetValues struct {
+// SyncValues reset values.
+type SyncValues struct {
 	pairs []pair
 }
 
@@ -42,25 +42,25 @@ type pair struct {
 }
 
 // AddBool add a bool value->target pair.
-func (rv *ResetValues) AddBool(value, target *bool) *bool {
+func (rv *SyncValues) AddBool(value, target *bool) *bool {
 	rv.pairs = append(rv.pairs, pair{value, target})
 	return value
 }
 
 // AddString add a string value->target pair.
-func (rv *ResetValues) AddString(value, target *string) *string {
+func (rv *SyncValues) AddString(value, target *string) *string {
 	rv.pairs = append(rv.pairs, pair{value, target})
 	return value
 }
 
 // AddInt add a int value->target pair.
-func (rv *ResetValues) AddInt(value, target *int) *int {
+func (rv *SyncValues) AddInt(value, target *int) *int {
 	rv.pairs = append(rv.pairs, pair{value, target})
 	return value
 }
 
-// Reset set values to targets.
-func (rv *ResetValues) Reset() {
+// Sync values to targets.
+func (rv *SyncValues) Sync() {
 	for _, pair := range rv.pairs {
 		switch v := (pair.value).(type) {
 		case *bool:

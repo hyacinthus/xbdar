@@ -15,7 +15,7 @@ var (
 )
 
 func init() {
-	rv := new(xconfig.ResetValues)
+	rv := new(xconfig.SyncValues)
 	xconfig.Load(config, func() {
 		flagConfig := new(Config)
 		flag.BoolVar(rv.AddBool(&flagConfig.Debug, &config.Debug), "debug", false, "debug?")
@@ -24,7 +24,7 @@ func init() {
 		flag.StringVar(rv.AddString(&flagConfig.APP.DocFile, &config.APP.DocFile), "d", "./docs/swagger.json", "swagger.json file path.")
 		flag.StringVar(rv.AddString(&flagConfig.APP.Host, &config.APP.Host), "host", "localhost:5000", "api host.")
 	})
-	rv.Reset()
+	rv.Sync()
 
 	// change to real host when use 'doc.json'.
 	docs.SwaggerInfo.Host = config.APP.Host
