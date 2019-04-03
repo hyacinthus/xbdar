@@ -2,6 +2,10 @@ basePath: /
 definitions:
   model.Chart:
     properties:
+      chart_dashboards:
+        items:
+          $ref: '#/definitions/model.DashboardChart'
+        type: array
       chart_param_json:
         $ref: '#/definitions/model.JSONObject'
         type: object
@@ -41,6 +45,10 @@ definitions:
         items:
           $ref: '#/definitions/model.Dashboard'
         type: array
+      dashboard_charts:
+        items:
+          $ref: '#/definitions/model.DashboardChart'
+        type: array
       key:
         type: string
       layout_json:
@@ -55,6 +63,22 @@ definitions:
         type: string
       title:
         type: string
+    type: object
+  model.DashboardChart:
+    properties:
+      chart:
+        $ref: '#/definitions/model.Chart'
+        type: object
+      chart_id:
+        type: string
+      dashboard:
+        $ref: '#/definitions/model.Dashboard'
+        type: object
+      dashboard_id:
+        type: string
+      data_param_json:
+        $ref: '#/definitions/model.JSONObject'
+        type: object
     type: object
   model.Datasource:
     properties:

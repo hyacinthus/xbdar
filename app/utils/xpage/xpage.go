@@ -34,9 +34,6 @@ func Middleware(defaultSize int) echo.MiddlewareFunc {
 			c.Set("perPage", perPage)
 			c.Set("offset", (page-1)*perPage)
 			c.Set("limit", perPage)
-			// 设置返回的Header
-			c.Response().Header().Set("X-Page-Num", strconv.Itoa(page))
-			c.Response().Header().Set("X-Per-Page", strconv.Itoa(perPage))
 			return next(c)
 		}
 	}

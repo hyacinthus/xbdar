@@ -9,8 +9,10 @@
     body {
       text-align: center;
     }
+
     #mountNode {
       margin: 0 auto;
+      padding: 16px;
       border: 1px black dashed;
     }
   </style>
@@ -31,30 +33,42 @@
       if (urlParams.has("host_url")) {
         HOST_URL = urlParams.get("host_url");
       }
+      const dashboard_id = urlParams.get("dashboard_id");
       const chart_id = urlParams.get("chart_id");
-      if (!chart_id) {
-        return;
+
+      async function getFirstChart(dashboard_id) {
+        const url = dashboard_id ? `${HOST_URL}/dashboards/${dashboard_id}/charts?page=1&per_page=1` : `${HOST_URL}/charts?page=1&per_page=1`;
+        const resp = await axios.get(url);
+        return dashboard_id ? resp.data.items[0].chart : resp.data.items[0];
+      }
+      async function getChart(chart_id, dashboard_id) {
+        const url = dashboard_id ? `${HOST_URL}/dashboards/${dashboard_id}/charts/${chart_id}` : `${HOST_URL}/charts/${chart_id}`;
+        const resp = await axios.get(url);
+        return dashboard_id ? resp.data.chart : resp.data;
       }
 
-      async function getChart(id) {
-        const resp = await axios.get(`${HOST_URL}/charts/${chart_id}`)
+      async function fetchChartData(chart_id, dashboard_id) {
+        const url = dashboard_id ? `${HOST_URL}/dashboards/${dashboard_id}/charts/${chart_id}/data` : `${HOST_URL}/charts/${chart_id}/data`;
+        const resp = await axios.get(url);
         return resp.data;
       }
 
-      async function fetchChartData(id) {
-        const resp = await axios.get(`${HOST_URL}/charts/${chart_id}/data`)
-        return resp.data;
-      }
 
       try {
         // get chart
-        const chart = await getChart(chart_id);
+        let chart
+        if (!chart_id) {
+          chart = await getFirstChart(dashboard_id);
+        } else {
+          chart = await getChart(chart_id, dashboard_id);
+        }
+
         const chart_param = chart.chart_param_json;
         document.title = `图表|${chart.name}`;
         $("#title").text(chart.name);
 
         // fetch chart data
-        const data = await fetchChartData(chart_id);
+        const data = await fetchChartData(chart.id, dashboard_id);
         const render = eval(chart_param.plot_js);
         render("mountNode", data);
       } catch (err) {

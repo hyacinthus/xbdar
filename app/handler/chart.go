@@ -47,7 +47,7 @@ func GetChart(c echo.Context) error {
 	id := c.Param("id")
 	chart, err := model.GetChartByID(id)
 	if err != nil {
-		return xerr.New(400, "request error", fmt.Sprintf("get chart #%s: %v", id, err))
+		return err
 	}
 	return c.JSON(http.StatusOK, chart)
 }
@@ -65,9 +65,10 @@ func GetChart(c echo.Context) error {
 // @Router /charts/{id}/data [get]
 func FetchChartData(c echo.Context) error {
 	id := c.Param("id")
+
 	data, err := service.FetchChartData(id)
 	if err != nil {
-		return xerr.New(400, "request error", fmt.Sprintf("fetch chart data #%s: %v", id, err))
+		return err
 	}
 	return c.JSON(http.StatusOK, data)
 }

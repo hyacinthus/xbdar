@@ -57,9 +57,7 @@ func Clean() {
 
 // CreateTables gorm auto migrate tables
 func CreateTables() {
-	db.AutoMigrate(&Datasource{})
-	db.AutoMigrate(&Chart{})
-	db.AutoMigrate(&Dashboard{})
+	db.AutoMigrate(&Datasource{}, &Chart{}, &Dashboard{}, &DashboardChart{})
 	initData()
 }
 
@@ -76,5 +74,5 @@ func GetDB() *gorm.DB {
 
 // CleanDB drops all tables.
 func CleanDB() {
-	db.DropTableIfExists(&Dashboard{}, &Chart{}, &Datasource{})
+	db.DropTableIfExists(&Dashboard{}, &Chart{}, &Datasource{}, &DashboardChart{})
 }

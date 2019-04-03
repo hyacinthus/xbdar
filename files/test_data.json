@@ -31,7 +31,7 @@
                 "key_path": "data#1"
             },
             "chart_param_json": {
-                "plot_js": "(function(node, data) { var chart = new G2.Chart({ container: node, forceFit: true, height: window.innerHeight }); chart.source(data); chart.scale('value', { min: 0 }); chart.scale('year', { range: [0, 1] }); chart.tooltip({ crosshairs: { type: 'line' } }); chart.line().position('year*value'); chart.point().position('year*value').size(4).shape('circle').style({ stroke: '#fff', lineWidth: 1 }); chart.render(); }) "
+                "plot_js": "(function(node, data) { var chart = new G2.Chart({ container: node, forceFit: true }); chart.source(data); chart.scale('value', { min: 0 }); chart.scale('year', { range: [0, 1] }); chart.tooltip({ crosshairs: { type: 'line' } }); chart.line().position('year*value'); chart.point().position('year*value').size(4).shape('circle').style({ stroke: '#fff', lineWidth: 1 }); chart.render(); }) "
             }
         },
         {
@@ -45,7 +45,7 @@
                 "key_path": "data#2"
             },
             "chart_param_json": {
-                "plot_js": "(function(node, data) { var chart = new G2.Chart({ container: node, forceFit: true, height: window.innerHeight }); chart.source(data); chart.scale('sales', { tickInterval: 20 }); chart.interval().position('year*sales'); chart.render(); }) "
+                "plot_js": "(function(node, data) { var chart = new G2.Chart({ container: node, forceFit: true }); chart.source(data); chart.scale('sales', { tickInterval: 20 }); chart.interval().position('year*sales'); chart.render(); }) "
             }
         },
         {
@@ -59,7 +59,24 @@
                 "sql": "select item,percent from item_percent"
             },
             "chart_param_json": {
-                "plot_js": "(function(node, data) { var chart = new G2.Chart({ container: node, forceFit: true, height: window.innerHeight }); chart.source(data, { percent: { formatter: function formatter(val) { val = val * 100 + '%'; return val; } } }); chart.coord('theta'); chart.tooltip({ showTitle: false }); chart.intervalStack().position('percent').color('item').label('percent', { offset: -40, textStyle: { textAlign: 'center', shadowBlur: 2, shadowColor: 'rgba(0, 0, 0, .45)' } }).tooltip('item*percent', function(item, percent) { percent = percent * 100 + '%'; return { name: item, value: percent }; }).style({ lineWidth: 1, stroke: '#fff' }); chart.render(); })"
+                "plot_js": "(function(node, data) { var chart = new G2.Chart({ container: node, forceFit: true }); chart.source(data, { percent: { formatter: function formatter(val) { val = val * 100 + '%'; return val; } } }); chart.coord('theta'); chart.tooltip({ showTitle: false }); chart.intervalStack().position('percent').color('item').label('percent', { offset: -40, textStyle: { textAlign: 'center', shadowBlur: 2, shadowColor: 'rgba(0, 0, 0, .45)' } }).tooltip('item*percent', function(item, percent) { percent = percent * 100 + '%'; return { name: item, value: percent }; }).style({ lineWidth: 1, stroke: '#fff' }); chart.render(); })"
+            }
+        },
+        {
+            "id": "4",
+            "name": "玫瑰图",
+            "type": "pie",
+            "datasource_domain": "db",
+            "datasource_type": "sqlite3",
+            "datasource_id": "2",
+            "data_param_json": {
+                "sql": "select year,population from year_population where country=?",
+                "values": [
+                    "china"
+                ]
+            },
+            "chart_param_json": {
+                "plot_js": "(function(node, data) { var chart = new G2.Chart({ container: node, forceFit: true }); chart.source(data); chart.coord('polar'); chart.legend({ position: 'right', offsetX: -140 }); chart.axis(false); chart.interval().position('year*population').color('year', G2.Global.colors_pie_16).style({ lineWidth: 1, stroke: '#fff' }); chart.render(); })"
             }
         }
     ],
@@ -70,10 +87,11 @@
             "title": "测试报表#1",
             "layout_json": {},
             "parent_id": null,
-            "chart_ids": [
-                "1",
-                "2"
-            ]
+            "own_charts": {
+                "1": null,
+                "2": null,
+                "4": {}
+            }
         },
         {
             "id": "2",
@@ -81,10 +99,10 @@
             "title": "测试报表#2",
             "layout_json": {},
             "parent_id": null,
-            "chart_ids": [
-                "2",
-                "3"
-            ]
+            "own_charts": {
+                "2": {},
+                "3": {}
+            }
         },
         {
             "id": "3",
@@ -93,9 +111,9 @@
             "layout_json": {},
             "parent_id": "1",
             "order": 1,
-            "chart_ids": [
-                "1"
-            ]
+            "own_charts": {
+                "1": {}
+            }
         },
         {
             "id": "4",
@@ -104,9 +122,14 @@
             "layout_json": {},
             "parent_id": "1",
             "order": 2,
-            "chart_ids": [
-                "3"
-            ]
+            "own_charts": {
+                "3": {},
+                "4": {
+                    "values": [
+                        "america"
+                    ]
+                }
+            }
         }
     ]
 }

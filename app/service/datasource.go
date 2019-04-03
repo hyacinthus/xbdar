@@ -96,7 +96,8 @@ type DatasourceDB struct {
 	Driver string
 	DSN    string `mapstructure:"dsn"`
 	Param  struct {
-		SQL string `mapstructure:"sql"`
+		SQL    string        `mapstructure:"sql"`
+		Values []interface{} `mapstructure:"values"`
 	} `mapstructure:",squash"`
 }
 
@@ -107,12 +108,15 @@ func (ds *DatasourceDB) Fetch() (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	rows, err := db.Raw(ds.Param.SQL).Rows()
+	rows, err := db.Raw(ds.Param.SQL, ds.Param.Values...).Rows()
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
+	// TODO: 目前是返回[]map[string]interface{}类型的结果
+	// 以后可能要处理map[string]interface{}, []interface{}, interface{}等类型的结果
+	// 在param中描述结果类型
 	return scanRecords(rows)
 }
 

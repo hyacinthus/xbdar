@@ -95,8 +95,13 @@ func loadData(data *Data) {
 		db.Create(v)
 
 		// dashboard's charts.
-		for _, chartID := range d.ChartIDs {
-			db.Model(v).Association("Charts").Append(charts[chartID])
+		for chartID, dataParam := range d.OwnCharts {
+			chart := charts[chartID]
+			db.Create(&model.DashboardChart{
+				DashboardID:   v.ID,
+				ChartID:       chart.ID,
+				DataParamJSON: dataParam,
+			})
 		}
 	}
 }
@@ -111,6 +116,6 @@ type Data struct {
 	Charts      []*model.Chart
 	Dashboards  []*struct {
 		model.Dashboard
-		ChartIDs []string `json:"chart_ids"`
+		OwnCharts map[string]model.JSONObject `json:"own_charts"`
 	}
 }

@@ -143,6 +143,12 @@
         "model.Chart": {
             "type": "object",
             "properties": {
+                "chart_dashboards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.DashboardChart"
+                    }
+                },
                 "chart_param_json": {
                     "type": "object",
                     "$ref": "#/definitions/model.JSONObject"
@@ -198,6 +204,12 @@
                         "$ref": "#/definitions/model.Dashboard"
                     }
                 },
+                "dashboard_charts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.DashboardChart"
+                    }
+                },
                 "key": {
                     "type": "string"
                 },
@@ -217,6 +229,29 @@
                 },
                 "title": {
                     "type": "string"
+                }
+            }
+        },
+        "model.DashboardChart": {
+            "type": "object",
+            "properties": {
+                "chart": {
+                    "type": "object",
+                    "$ref": "#/definitions/model.Chart"
+                },
+                "chart_id": {
+                    "type": "string"
+                },
+                "dashboard": {
+                    "type": "object",
+                    "$ref": "#/definitions/model.Dashboard"
+                },
+                "dashboard_id": {
+                    "type": "string"
+                },
+                "data_param_json": {
+                    "type": "object",
+                    "$ref": "#/definitions/model.JSONObject"
                 }
             }
         },

@@ -3,8 +3,10 @@ LDFLAGS :=
 
 cmds = cmd_load_data cmd_start_swagger
 
-all: xbdar docs $(cmds)
+all: app docs $(cmds)
 cmds: $(cmds)
+
+app: xbdar
 
 xbdar:
 	$(V)echo + $@
