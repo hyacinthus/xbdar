@@ -30,6 +30,4 @@ clean:
 	$(V)rm -f xbdar
 	$(V)echo - $(cmds)
 	$(V)rm -f $(cmds)
-	$(V)echo - docs/
-	$(V)rm -rf docs/
 

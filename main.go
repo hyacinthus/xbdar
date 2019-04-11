@@ -14,7 +14,7 @@ import (
 // @contact.url https://github.com/webee
 // @contact.email webee.yw@gmail.com
 
-// schemes http https
+// @schemes http https
 
 // @BasePath /
 
