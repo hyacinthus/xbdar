@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/hyacinthus/xbdar/app/model"
-	"github.com/hyacinthus/xbdar/utils/xconfig"
+	"github.com/webee/x/xconfig"
 
 	"github.com/jinzhu/gorm"
 )
