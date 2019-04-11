@@ -121,10 +121,7 @@ func (ds *DatasourceDB) Fetch() (interface{}, error) {
 }
 
 // openPathForRead optn a path(file or url) as reader
-func openPathForRead(path string) (interface {
-	io.Reader
-	io.Closer
-}, error) {
+func openPathForRead(path string) (io.ReadCloser, error) {
 	if strings.HasPrefix(path, "http") {
 		res, err := http.Get(path)
 		if err != nil {

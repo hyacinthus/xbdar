@@ -137,9 +137,38 @@
                     }
                 }
             }
+        },
+        "/status": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "App"
+                ],
+                "summary": "获取应用状态信息",
+                "operationId": "get-status",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/app.Status"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "app.Status": {
+            "type": "object",
+            "properties": {
+                "startup": {
+                    "type": "string"
+                }
+            }
+        },
         "model.Chart": {
             "type": "object",
             "properties": {

@@ -2,6 +2,7 @@ package app
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/hyacinthus/xbdar/app/handler"
 	"github.com/hyacinthus/xbdar/app/model"
@@ -12,14 +13,23 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-// App is app object
-type App struct {
-	config *Config
-	e      *echo.Echo
-}
+type (
+	// App is app object
+	App struct {
+		config *Config
+		e      *echo.Echo
+		status Status
+	}
+
+	// Status is app's status
+	Status struct {
+		Startup time.Time `json:"startup"`
+	}
+)
 
 // Run start echo server.
 func (app *App) Run(address string) {
+	app.status.Startup = time.Now()
 	app.e.Logger.Fatal(app.e.Start(address))
 }
 
@@ -30,18 +40,18 @@ func (app *App) Destroy() {
 
 // CreateApp create a app object.
 func CreateApp(debug bool, config *Config) *App {
-	app := &App{config, echo.New()}
+	app := &App{config: config, e: echo.New()}
 
 	// db
 	model.Init(debug, &config.DB)
 
 	// echo
-	initEcho(app.e, debug, config)
+	initEcho(app, app.e, debug, config)
 
 	return app
 }
 
-func initEcho(e *echo.Echo, debug bool, config *Config) {
+func initEcho(app *App, e *echo.Echo, debug bool, config *Config) {
 	e.Debug = debug
 
 	e.HTTPErrorHandler = xerr.ErrorHandler
@@ -55,7 +65,7 @@ func initEcho(e *echo.Echo, debug bool, config *Config) {
 
 	// routes
 	// app
-	e.GET("/status", getStatus)
+	e.GET("/status", app.getStatus)
 
 	dashboards := e.Group("/dashboards")
 	charts := e.Group("/charts")
@@ -72,7 +82,13 @@ func initEcho(e *echo.Echo, debug bool, config *Config) {
 	charts.GET("/:id/data", handler.FetchChartData)
 }
 
-// API状态 成功204 失败500
-func getStatus(c echo.Context) error {
-	return c.NoContent(http.StatusNoContent)
+// getStatus return app's status info
+// @Summary 获取应用状态信息
+// @ID get-status
+// @Tags App
+// @Produce json
+// @Success 200 {object} app.Status
+// @Router /status [get]
+func (app *App) getStatus(c echo.Context) error {
+	return c.JSON(http.StatusOK, app.status)
 }

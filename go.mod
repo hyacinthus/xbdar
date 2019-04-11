@@ -27,6 +27,7 @@ require (
 	github.com/swaggo/echo-swagger v0.0.0-20190329130007-1219b460a043
 	github.com/swaggo/swag v1.5.0
 	github.com/valyala/fasttemplate v1.0.1 // indirect
+	github.com/webee/x v0.0.0-20190411080923-eeed88514bb0
 	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c // indirect
 	golang.org/x/net v0.0.0-20190328230028-74de082e2cca // indirect
 	golang.org/x/sys v0.0.0-20190402054613-e4093980e83e // indirect

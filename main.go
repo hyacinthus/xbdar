@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/hyacinthus/x/xlog"
 	"github.com/hyacinthus/xbdar/app"
-	"github.com/hyacinthus/xbdar/utils/xconfig"
+	"github.com/webee/x/xconfig"
 )
 
 // @title 雪豹商情报表系统API

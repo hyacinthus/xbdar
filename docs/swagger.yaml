@@ -1,5 +1,10 @@
 basePath: /
 definitions:
+  app.Status:
+    properties:
+      startup:
+        type: string
+    type: object
   model.Chart:
     properties:
       chart_dashboards:
@@ -226,4 +231,18 @@ paths:
       summary: 拉取图表数据
       tags:
       - Chart
+  /status:
+    get:
+      operationId: get-status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Status'
+            type: object
+      summary: 获取应用状态信息
+      tags:
+      - App
 swagger: "2.0"
