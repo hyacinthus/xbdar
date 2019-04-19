@@ -106,6 +106,15 @@ definitions:
     additionalProperties:
       type: object
     type: object
+  xerr.Error:
+    properties:
+      code:
+        type: integer
+      error:
+        type: string
+      message:
+        type: string
+    type: object
   xpage.Pagination:
     properties:
       has_next:
@@ -159,6 +168,11 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/xpage.Pagination'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/xerr.Error'
             type: object
       summary: 分页获取图表基本信息
       tags:

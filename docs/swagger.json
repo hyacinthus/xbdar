@@ -52,6 +52,13 @@
                             "type": "object",
                             "$ref": "#/definitions/xpage.Pagination"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/xerr.Error"
+                        }
                     }
                 }
             }
@@ -296,6 +303,20 @@
             "type": "object",
             "additionalProperties": {
                 "type": "object"
+            }
+        },
+        "xerr.Error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
             }
         },
         "xpage.Pagination": {

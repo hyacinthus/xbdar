@@ -24,6 +24,7 @@ import (
 // @Param page query int false "第几页"
 // @Param per_page query int false "每页多少"
 // @Success 200 {object} xpage.Pagination
+// @Success 400 {object} xerr.Error
 // @Router /charts [get]
 func GetCharts(c echo.Context) error {
 	page := c.Get("page").(int)
