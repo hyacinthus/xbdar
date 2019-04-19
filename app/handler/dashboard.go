@@ -1,13 +1,16 @@
 package handler
 
 import (
+	// for swag
+	_ "github.com/webee/x/xpage"
+
 	"fmt"
 	"net/http"
 
 	"github.com/hyacinthus/xbdar/app/model"
 	"github.com/hyacinthus/xbdar/app/service"
-	"github.com/hyacinthus/xbdar/app/utils/xerr"
 	"github.com/labstack/echo/v4"
+	"github.com/webee/x/xerr"
 )
 
 // GetDashboards 分页获取dashboard info

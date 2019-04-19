@@ -1,12 +1,13 @@
 package model
 
 import (
-	"github.com/hyacinthus/x/model"
+	"github.com/webee/x/xpage"
+	"github.com/webee/x/xpage/xgorm"
 )
 
 // Dashboard 报表
 type Dashboard struct {
-	model.Entity
+	Entity
 	Key             *string           `json:"key" gorm:"type:varchar(64);index"`
 	Title           string            `json:"title" gorm:"type:varchar(128);not null"`
 	LayoutJSON      JSONObject        `json:"layout_json" gorm:"type:text;not null"`
@@ -20,7 +21,7 @@ type Dashboard struct {
 
 // DashboardChart 报表-图表关联表
 type DashboardChart struct {
-	model.Entity
+	Entity
 	Dashboard     *Dashboard `json:"dashboard" gorm:"ForeighKey:DashboardID"`
 	DashboardID   string     `json:"dashboard_id" gorm:"type:varchar(20);primary_key"`
 	Chart         *Chart     `json:"chart" gorm:"Foreign:ChartID"`
@@ -36,9 +37,9 @@ func (*DashboardChart) TableName() string {
 // services
 
 // GetDashboards 分页获取报表基本信息(不包含子报表)
-func GetDashboards(page, perPage int) (*Pagination, error) {
+func GetDashboards(page, perPage int) (*xpage.Pagination, error) {
 	dashboards := make([]Dashboard, 0)
-	return Paginate(db.Model(&Dashboard{}).Where("parent_id is ?", nil).Order("id"), page, perPage, &dashboards)
+	return xgorm.NewPaginator(db.Model(&Dashboard{}).Where("parent_id is ?", nil).Order("id"), &dashboards).Paginate(page, perPage)
 }
 
 // GetDashboardByID 通过id获取报表基本信息（递归包含所有子报表）
@@ -69,9 +70,9 @@ func fetchDashboardChildren(d *Dashboard) error {
 }
 
 // GetDashboardCharts 分页获取报表chart信息
-func GetDashboardCharts(dashboardID string, page, perPage int) (*Pagination, error) {
+func GetDashboardCharts(dashboardID string, page, perPage int) (*xpage.Pagination, error) {
 	dashboardCharts := make([]DashboardChart, 0)
-	return Paginate(db.Model(&DashboardChart{}).Preload("Chart").Where("dashboard_id=?", dashboardID).Order("id"), page, perPage, &dashboardCharts)
+	return xgorm.NewPaginator(db.Model(&DashboardChart{}).Preload("Chart").Where("dashboard_id=?", dashboardID).Order("id"), &dashboardCharts).Paginate(page, perPage)
 }
 
 // GetDashboardChartByID 通过id获取报表-图表信息

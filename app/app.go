@@ -6,8 +6,8 @@ import (
 
 	"github.com/hyacinthus/xbdar/app/handler"
 	"github.com/hyacinthus/xbdar/app/model"
-	"github.com/hyacinthus/xbdar/app/utils/xerr"
-	"github.com/hyacinthus/xbdar/app/utils/xpage"
+	"github.com/webee/x/xerr"
+	"github.com/webee/x/xpage/xecho"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -61,7 +61,7 @@ func initEcho(app *App, e *echo.Echo, debug bool, config *Config) {
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 
-	xpageMiddleware := xpage.Middleware(config.PageSize)
+	xpageMiddleware := xecho.Middleware(config.PageSize)
 
 	// routes
 	// app

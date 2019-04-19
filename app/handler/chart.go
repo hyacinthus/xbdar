@@ -1,10 +1,13 @@
 package handler
 
 import (
+	// for swag
+	_ "github.com/webee/x/xpage"
+
 	"fmt"
 	"net/http"
 
-	"github.com/hyacinthus/xbdar/app/utils/xerr"
+	"github.com/webee/x/xerr"
 
 	"github.com/hyacinthus/xbdar/app/model"
 	"github.com/hyacinthus/xbdar/app/service"
@@ -20,8 +23,7 @@ import (
 // @Produce json
 // @Param page query int false "第几页"
 // @Param per_page query int false "每页多少"
-// @Success 200 {object} model.Pagination
-// @Success 400 {object} xerr.Error
+// @Success 200 {object} xpage.Pagination
 // @Router /charts [get]
 func GetCharts(c echo.Context) error {
 	page := c.Get("page").(int)
@@ -41,7 +43,6 @@ func GetCharts(c echo.Context) error {
 // @Produce json
 // @Param id path string true "Chart ID"
 // @Success 200 {object} model.Chart
-// @Success 400 {object} xerr.Error
 // @Router /charts/{id} [get]
 func GetChart(c echo.Context) error {
 	id := c.Param("id")
@@ -61,7 +62,6 @@ func GetChart(c echo.Context) error {
 // @Produce json
 // @Param id path string true "Chart ID"
 // @Success 200 {string} string "任意类型数据"
-// @Success 400 {object} xerr.Error
 // @Router /charts/{id}/data [get]
 func FetchChartData(c echo.Context) error {
 	id := c.Param("id")

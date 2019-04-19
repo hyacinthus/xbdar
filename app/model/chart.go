@@ -2,11 +2,18 @@ package model
 
 import (
 	"github.com/hyacinthus/x/model"
+	"github.com/webee/x/xpage"
+	"github.com/webee/x/xpage/xgorm"
+)
+
+type (
+	// Entity 实体common
+	Entity = model.Entity
 )
 
 // Chart 图表
 type Chart struct {
-	model.Entity
+	Entity
 	Name             string            `json:"name" gorm:"type:varchar(128);not null" example:"基础折线图"`
 	Type             string            `json:"type" gorm:"type:varchar(30);not null" example:"line"`
 	DatasourceDomain string            `json:"datasource_domain" gorm:"type:varchar(20);not null" example:"db"`
@@ -22,9 +29,9 @@ type Chart struct {
 // services
 
 // GetCharts 分页获取chart信息
-func GetCharts(page, perPage int) (*Pagination, error) {
+func GetCharts(page, perPage int) (*xpage.Pagination, error) {
 	charts := make([]Chart, 0)
-	return Paginate(db.Model(&Chart{}).Order("id"), page, perPage, &charts)
+	return xgorm.NewPaginator(db.Model(&Chart{}).Order("id"), &charts).Paginate(page, perPage)
 }
 
 // GetChartByID 通过id获取图表基本信息
