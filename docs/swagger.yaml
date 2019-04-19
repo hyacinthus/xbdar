@@ -101,11 +101,12 @@ definitions:
       type:
         type: string
     type: object
+  model.Entity: {}
   model.JSONObject:
     additionalProperties:
       type: object
     type: object
-  model.Pagination:
+  xpage.Pagination:
     properties:
       has_next:
         type: boolean
@@ -125,17 +126,6 @@ definitions:
         type: integer
       total:
         type: integer
-    type: object
-  xerr.Error:
-    properties:
-      code:
-        type: integer
-      error:
-        description: 错误代码，为英文字符串，前端可用此判断大的错误类型。
-        type: string
-      message:
-        description: 错误消息，为详细错误描述，前端可选择性的展示此字段。
-        type: string
     type: object
 host: '{{.Host}}'
 info:
@@ -168,12 +158,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.Pagination'
-            type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/xerr.Error'
+            $ref: '#/definitions/xpage.Pagination'
             type: object
       summary: 分页获取图表基本信息
       tags:
@@ -197,11 +182,6 @@ paths:
           schema:
             $ref: '#/definitions/model.Chart'
             type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/xerr.Error'
-            type: object
       summary: 获取图表基本信息
       tags:
       - Chart
@@ -223,11 +203,6 @@ paths:
           description: 任意类型数据
           schema:
             type: string
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/xerr.Error'
-            type: object
       summary: 拉取图表数据
       tags:
       - Chart
@@ -245,4 +220,7 @@ paths:
       summary: 获取应用状态信息
       tags:
       - App
+schemes:
+- http
+- https
 swagger: "2.0"
