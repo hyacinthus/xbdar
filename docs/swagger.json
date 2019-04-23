@@ -261,6 +261,10 @@
                 "chart_id": {
                     "type": "string"
                 },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
                 "dashboard": {
                     "type": "object",
                     "$ref": "#/definitions/model.Dashboard"
@@ -271,6 +275,10 @@
                 "data_param_json": {
                     "type": "object",
                     "$ref": "#/definitions/model.JSONObject"
+                },
+                "updated_at": {
+                    "description": "最后更新时间",
+                    "type": "string"
                 }
             }
         },

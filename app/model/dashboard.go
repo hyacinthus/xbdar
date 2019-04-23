@@ -21,7 +21,7 @@ type Dashboard struct {
 
 // DashboardChart 报表-图表关联表
 type DashboardChart struct {
-	Entity
+	ModelCommon
 	Dashboard     *Dashboard `json:"dashboard" gorm:"ForeighKey:DashboardID"`
 	DashboardID   string     `json:"dashboard_id" gorm:"type:varchar(20);primary_key"`
 	Chart         *Chart     `json:"chart" gorm:"Foreign:ChartID"`

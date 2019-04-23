@@ -23,6 +23,16 @@ var (
 	db *gorm.DB
 )
 
+// ModelCommon 模型通用字段
+type ModelCommon struct {
+	// 创建时间
+	CreatedAt time.Time `json:"created_at"`
+	// 最后更新时间
+	UpdatedAt time.Time `json:"updated_at"`
+	// 软删除
+	DeletedAt *time.Time `json:"-" gorm:"index"`
+}
+
 // Init model, database, stores...
 func Init(debug bool, conf *Config) {
 	config = conf
