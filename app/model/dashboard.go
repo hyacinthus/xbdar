@@ -1,6 +1,8 @@
 package model
 
 import (
+	"time"
+
 	"github.com/webee/x/xpage"
 	"github.com/webee/x/xpage/xgorm"
 )
@@ -21,12 +23,15 @@ type Dashboard struct {
 
 // DashboardChart 报表-图表关联表
 type DashboardChart struct {
-	ModelCommon
 	Dashboard     *Dashboard `json:"dashboard" gorm:"ForeighKey:DashboardID"`
 	DashboardID   string     `json:"dashboard_id" gorm:"type:varchar(20);primary_key"`
 	Chart         *Chart     `json:"chart" gorm:"Foreign:ChartID"`
 	ChartID       string     `json:"chart_id" gorm:"type:varchar(20);primary_key"`
 	DataParamJSON JSONObject `json:"data_param_json" gorm:"type:text"`
+	// 创建时间
+	CreatedAt time.Time `json:"created_at"`
+	// 最后更新时间
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 // TableName set the gorm model table name.

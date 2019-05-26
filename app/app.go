@@ -38,7 +38,7 @@ func (app *App) Destroy() {
 	model.Clean()
 }
 
-// CreateApp create a app object.
+// CreateApp create an app object.
 func CreateApp(debug bool, config *Config) *App {
 	app := &App{config: config, e: echo.New()}
 
